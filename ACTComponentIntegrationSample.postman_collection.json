@@ -1,0 +1,232 @@
+{
+	"info": {
+		"name": "ACTComponentIntegrationSample",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"		
+	},
+	"item": [
+		{
+			"name": "GetAuthToken",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();",
+							"",
+							"// Check for successful status code",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"// Set the AccessToken collection variable",
+							"pm.collectionVariables.set(\"AccessToken\", response.access_token);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{ClientSecret}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{ClientId}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "actComponentService.clientComponentApi",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{IdentityBaseAddress}}/connect/token",
+					"host": [
+						"{{IdentityBaseAddress}}"
+					],
+					"path": [
+						"connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetClientComponents",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();",
+							"",
+							"// Check for successful status code",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"// Set the AccessToken collection variable",
+							"pm.collectionVariables.set(\"ClientComponents\", JSON.stringify(response));",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{AccessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ComponentServiceBaseAddress}}/clientcomponents/{{ClientId}}",
+					"host": [
+						"{{ComponentServiceBaseAddress}}"
+					],
+					"path": [
+						"clientcomponents",
+						"{{ClientId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateClientComponents",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{AccessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{ClientComponents}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ComponentServiceBaseAddress}}/clientcomponents/{{ClientId}}",
+					"host": [
+						"{{ComponentServiceBaseAddress}}"
+					],
+					"path": [
+						"clientcomponents",
+						"{{ClientId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "IdentityBaseAddress",
+			"value": "https://identity-dev.actbuildingsystems.com",
+			"type": "default"
+		},
+		{
+			"key": "AccessToken",
+			"value": ""
+		},
+		{
+			"key": "ComponentServiceBaseAddress",
+			"value": "https://component-service-dev.actbuildingsystems.com",
+			"type": "default"
+		},
+		{
+			"key": "ClientComponents",
+			"value": ""
+		},
+		{
+			"key": "ClientId",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "ClientSecret",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "ClientUserName",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
