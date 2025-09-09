@@ -44,6 +44,19 @@ The intended workflow for a ACT client to integrate is as follows:
 - Compare the response with the Client's own information and create an array of `ClientComponent` that only contains the items to be updated
 - **If required** perform a PUT to `/clientcomponents/{clientId}/{?priceCategory}` with the array of differences
 
+
+## Postman Example
+
+A Postman collection example can be found [ACTComponentIntegrationSample.postman_collection.json](ACTComponentIntegrationSample.postman_collection.json) to use it, import it into Postman, and then set the collection variables:
+
+* ClientId (this is your 3 character ACT clientId)
+* ClientSecret (this can be provided on request by ACT and is unique to your ACT client, and should be kept safe)
+* ClientUserName (this can be provided on request by ACT and is unique to your ACT client)
+
+Running `GetAuthToken` will set the variable `AccessToken` provided the `ClientSecret` and `ClientUserName` are correct.
+Once you have issued a successful `GetAuthToken` request, running `GetClientComponents` will retrieve the components for your `ClientId` optionally, you can add `?priceCategory=` if you know and use ACT price categories. When a successful request of `GetClientComponents` is made the variable `ClientComponents` will also be set, and will be available for the final request, which is `UpdateClientComponents` running this without change will result in no changes to your client components, however, if you update any properties they will be reflected in a subsequent call to `GetClientComponents`.
+
+
 ## Models
 
 ### ClientComponent
